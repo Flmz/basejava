@@ -14,6 +14,12 @@ public class ArrayStorage {
 
     void save(Resume r) {
         for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null && storage[i].uuid.equals(r.uuid)) {
+                System.out.println("This resume is already on the storage");
+                return;
+            }
+        }
+        for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
                 storage[i] = r; // Вставляем пришедшее нам резюме в первую пустую ячейку.
                 size++;
