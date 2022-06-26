@@ -5,7 +5,7 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    int size = 0;
+    int size;
 
     void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -14,71 +14,41 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null && storage[i].uuid.equals(r.uuid)) {
-                System.out.println("This resume is already on the storage");
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(r.uuid)) {
+                System.out.println("Resume " + r.uuid + " is already on the storage");
                 return;
             }
         }
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                storage[i] = r; // Вставляем пришедшее нам резюме в первую пустую ячейку.
-                size++;
-                return;
-            }
-        }
+
+        storage[size] = r;
+        size++;
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                System.out.println("No resume with such id");
-                break;
-            } else {
-                if (uuid.equals(storage[i].uuid))
-                    return storage[i];
-            }
+        for (int i = 0; i < size; i++) {
+            if (uuid.equals(storage[i].uuid))
+                return storage[i];
         }
+        System.out.println("No resume with such id");
         return null;
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) { //тут проверяем ячейку массива на null, чтобы не было NullPointerException
+        for (int i = 0; i < size; i++) {
+            if (uuid.equals(storage[i].uuid)) {
+                storage[i] = null;
+                System.arraycopy(storage, i + 1, storage, i, size);//двигаем массив, чтобы не было пустот ме
+                //между резюме
+                size--;
                 break;
-            } else {
-                if (uuid.equals(storage[i].uuid)) {
-                    storage[i] = null;
-                    System.arraycopy(storage, i + 1, storage, i, storage.length - 1 - i);//сдвигаем наш массив,
-                    //чтобы не было пустых ячеек между id
-                    size--;
-                    break;
-                }
             }
         }
     }
-
-    void print() {
-        for (int i = 0; i < storage.length - 1; i++) {
-            System.out.println(storage[i]);
-        }
-    }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
 
     Resume[] getAll() {
-        Resume[] copyResume = new Resume[size()];
-
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                copyResume[i] = storage[i];
-            } else {
-                break;
-            }
-        }
-        //возвращаем новый массив, который имеет размер в кол-ве наших резюме. Без null;
+        Resume[] copyResume;
+        copyResume = Arrays.copyOf(storage, size);
         return copyResume;
     }
 
@@ -86,3 +56,5 @@ public class ArrayStorage {
         return size;
     }
 }
+
+
