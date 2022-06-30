@@ -8,64 +8,66 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
-    int size;
+    private final Resume[] storage = new Resume[10000];
+    private int size;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
-
     }
-    void update(Resume r, String uuid){
-        for(int i =0; i < size; i++){
-            if(isResumeInStorage(r,i)){
-                storage[i].uuid = uuid;
-                return;
-            }
+
+    public void update(Resume r) {
+        int index = findIndex(r.uuid);
+        if (index > -1) {
+            System.out.printf("Yes, we have resume with id %s", r.uuid);
+        } else {
+            System.out.println("Sorry, we dont have resume with such id");
         }
-        System.out.println("There is no such resume with ID " + uuid);
     }
 
     public void save(Resume r) {
-        for (int i = 0; i < size; i++) {
-            if (isResumeInStorage(r, i)) {
-                System.out.println("Resume " + r.uuid + " is already on the storage");
-                return;
-            }
+        int index = findIndex(r.uuid);
+
+        if (size >= storage.length) {
+            System.out.println("Sorry, storage is full");
+        } else if (index > -1) {
+            System.out.println("Sorry, resume with id " + r.uuid + " already in the storage");
+        } else {
+            storage[size] = r;
+            size++;
         }
-        storage[size] = r;
-        size++;
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (isResumeInStorage(uuid, i))
-                return storage[i];
+        int index = findIndex(uuid);
+
+        if (index > -1) {
+            return storage[index];
+        } else {
+            System.out.println("There is no such resume with ID " + uuid);
+            return null;
         }
-        System.out.println("There is no such resume with ID " + uuid);
-        return null;
     }
 
-    //двигаем массив, чтобы не было пустот ме
-    //между резюме
     public void delete(String uuid) {
+        int index = findIndex(uuid);
+        if (index > -1) {
+            //System.arraycopy(storage, i + 1, storage, i, size - 1 - i); //сдвиг массива
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
+        } else {
+            System.out.println("There is no such resume with ID " + uuid);
+        }
+    }
+
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (isResumeInStorage(uuid, i)) {
-                System.arraycopy(storage, i + 1, storage, i, size - 1 - i);
-                storage[size - 1] = null;
-                size--;
-                return;
+            if (storage[i].uuid.equals(uuid)) {
+                return i;
             }
         }
-        System.out.println("There is no such resume with ID " + uuid);
-    }
-
-    private boolean isResumeInStorage(String uuid, int index) {
-        return uuid.equals(storage[index].uuid);
-    }
-    //Этими методами попытался избавиться от дублирования кода.
-    private boolean isResumeInStorage(Resume r, int index) {
-        return storage[index].uuid.equals(r.uuid);
+        return -1;
     }
 
     public Resume[] getAll() {
