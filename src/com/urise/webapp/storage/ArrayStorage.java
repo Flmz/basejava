@@ -17,21 +17,21 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        int index = findIndex(r.uuid);
-        if (index > -1) {
-            System.out.printf("Yes, we have resume with id %s", r.uuid);
+        int index = findIndex(r.getUuid());
+        if (index == -1) {
+            System.out.print("Sorry, we dont have resume with such id");
         } else {
-            System.out.println("Sorry, we dont have resume with such id");
+            storage[index] = r;
         }
     }
 
     public void save(Resume r) {
-        int index = findIndex(r.uuid);
+        int index = findIndex(r.getUuid());
 
         if (size >= storage.length) {
             System.out.println("Sorry, storage is full");
         } else if (index > -1) {
-            System.out.println("Sorry, resume with id " + r.uuid + " already in the storage");
+            System.out.println("Sorry, resume with id " + r.getUuid() + " already in the storage");
         } else {
             storage[size] = r;
             size++;
@@ -63,7 +63,7 @@ public class ArrayStorage {
 
     private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
         }
