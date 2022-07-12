@@ -24,6 +24,7 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_4 = "uuid4";
     private static final Resume RESUME_4 = new Resume(UUID_4);
 
+
     private static final String UUID_NOT_EXIST = "dummy";
 
 
@@ -49,8 +50,8 @@ public abstract class AbstractArrayStorageTest {
     public void clear() throws Exception {
         storage.clear();
         assertSize(0);
-        Resume[] r = storage.getAll();
-        assertArrayEquals(r, storage.getAll());
+
+        assertArrayEquals(new Resume[0], storage.getAll());
     }
 
     @Test
@@ -60,22 +61,27 @@ public abstract class AbstractArrayStorageTest {
         assertSame(testResume, storage.get(UUID_1));
     }
 
-    @Test
-    public void getAll() throws Exception {
-        final Resume[] EXPECTED_RESUMES = storage.getAll();
-        assertArrayEquals(EXPECTED_RESUMES, storage.getAll());
-        assertSize(3);
-
+    @Test(expected = NotExistStorageException.class)
+    public void updateNotExist() throws Exception {
+        storage.update(RESUME_4);
     }
 
+    @Test
+    public void getAll() throws Exception {
+        final Resume[] EXPECTED_RESUMES = {RESUME_1, RESUME_2, RESUME_3};
+        Resume[] testResume = storage.getAll();
+        assertArrayEquals(EXPECTED_RESUMES, testResume);
+        assertSize(3);
+    }
 
     @Test
     public void save() throws Exception {
         storage.save(RESUME_4);
         assertSize(4);
+        assertGet(RESUME_4);
     }
 
-    @Test
+    @Test(expected = StorageExeption.class)
     public void saveOverFlow() throws Exception {
         storage.clear();
         try {
@@ -85,6 +91,7 @@ public abstract class AbstractArrayStorageTest {
         } catch (StorageExeption ex) {
             fail("The overflow occurred prematurely");
         }
+        storage.save(RESUME_1);
     }
 
     @Test(expected = ExistStorageException.class)
