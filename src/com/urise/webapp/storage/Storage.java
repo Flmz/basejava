@@ -3,7 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 public interface Storage {
-    void clear();
+    void clearStorage();
 
     void update(Resume r);
 
@@ -15,6 +15,6 @@ public interface Storage {
 
     Resume[] getAll();
 
-    int size();
+    int getSize();
 }
 
