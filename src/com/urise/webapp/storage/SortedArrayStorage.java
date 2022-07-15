@@ -19,6 +19,12 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         if (elementsToMove > 0) {
             System.arraycopy(storage, index + 1, storage, index, elementsToMove);
         }
+        size--;
+    }
+
+    @Override
+    public void doUpdate(Resume r, int index) {
+        storage[index] = r;
     }
 
     @Override

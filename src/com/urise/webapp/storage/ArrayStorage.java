@@ -13,6 +13,13 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     public void deleteElement(int index) {
         storage[index] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
+    }
+
+    @Override
+    public void doUpdate(Resume r, int index) {
+        storage[index] = r;
     }
 
     public int findIndex(String uuid) {

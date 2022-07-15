@@ -11,6 +11,7 @@ import java.util.Arrays;
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_LIMIT = 10000;
+
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
 
     protected int size;
@@ -22,27 +23,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume r) {
-        if (!checkNotExist(r)) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
-            storage[findIndex((r.getUuid()))] = r;
-        }
-    }
-
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
-    }
-
-
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
+    @Override
     public void save(Resume r) {
         int index = findIndex(r.getUuid());
         if (!saveExist(r)) {
@@ -56,15 +41,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
 
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            deleteElement(index);
-            storage[size - 1] = null;
-            size--;
-        }
+    protected Resume doGet(int index) {
+        return storage[index];
     }
 
     public int getSize() {
@@ -77,4 +55,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     public abstract void deleteElement(int index);
 }
+
 

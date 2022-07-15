@@ -1,6 +1,7 @@
 package com.urise.webapp.storage;
 
-import static org.junit.Assert.*;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class ListStorageTest extends AbstractArrayStorageTest {
 
@@ -8,4 +9,8 @@ public class ListStorageTest extends AbstractArrayStorageTest {
         super(new ListStorage());
     }
 
+    @Test
+    @Ignore
+    public void saveOverFlow() throws Exception {
+    }
 }
