@@ -1,13 +1,14 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.*;
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.StorageExeption;
 import com.urise.webapp.model.Resume;
-import org.junit.*;
-
+import org.junit.Before;
+import org.junit.Test;
 
 import static com.urise.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 import static org.junit.Assert.*;
-
 
 public abstract class AbstractArrayStorageTest {
     private final Storage storage;
@@ -30,14 +31,13 @@ public abstract class AbstractArrayStorageTest {
         RESUME_4 = new Resume(UUID_4);
     }
 
-
     protected AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
 
     @Before
     public void setUp() throws Exception {
-        storage.clearStorage();
+        storage.clear();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
@@ -50,7 +50,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void clear() throws Exception {
-        storage.clearStorage();
+        storage.clear();
         assertSize(0);
         assertArrayEquals(new Resume[0], storage.getAll());
     }
@@ -84,7 +84,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = StorageExeption.class)
     public void saveOverFlow() throws Exception {
-        storage.clearStorage();
+        storage.clear();
         try {
             for (int i = 0; i < STORAGE_LIMIT; i++) {
                 storage.save(new Resume());

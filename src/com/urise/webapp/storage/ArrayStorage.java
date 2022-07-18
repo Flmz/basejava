@@ -9,6 +9,7 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     public void addElement(Resume r, int index) {
         storage[size] = r;
+        size++;
     }
 
     public void deleteElement(int index) {
@@ -17,12 +18,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         size--;
     }
 
-    @Override
-    public void doUpdate(Resume r, int index) {
-        storage[index] = r;
-    }
-
-    public int findIndex(String uuid) {
+    public Object findSearchKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
@@ -31,5 +27,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 }
+
 
 

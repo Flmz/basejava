@@ -1,6 +1,6 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.*;
+import com.urise.webapp.exception.StorageExeption;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -17,29 +17,31 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size;
 
     @Override
-    public void clearStorage() {
+    public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
+    protected void doDelete(int index) {
+        deleteElement(index);
+    }
+
     @Override
+    protected void doUpdate(Resume r, int index) {
+        storage[index] = r;
+    }
+
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
     @Override
-    public void save(Resume r) {
-        int index = findIndex(r.getUuid());
-        if (!saveExist(r)) {
-            throw new ExistStorageException(r.getUuid());
-        } else if (size == STORAGE_LIMIT) {
+    public void doSave(Resume r, int index) {
+        if (size == STORAGE_LIMIT) {
             throw new StorageExeption("Storage overflow", r.getUuid());
-        } else {
-            addElement(r, index);
-            size++;
         }
+        addElement(r, index);
     }
-
 
     protected Resume doGet(int index) {
         return storage[index];
@@ -49,11 +51,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    protected abstract int findIndex(String uuid);
+    protected abstract Object findSearchKey(String uuid);
 
     public abstract void addElement(Resume r, int index);
 
     public abstract void deleteElement(int index);
 }
+
 
 

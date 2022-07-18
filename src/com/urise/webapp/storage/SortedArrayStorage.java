@@ -11,6 +11,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         int indexOfElement = (index * -1) - 1;
         System.arraycopy(storage, indexOfElement, storage, indexOfElement + 1, size - indexOfElement);
         storage[indexOfElement] = r;
+        size++;
     }
 
     @Override
@@ -18,18 +19,15 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         int elementsToMove = size - index - 1;
         if (elementsToMove > 0) {
             System.arraycopy(storage, index + 1, storage, index, elementsToMove);
+            storage[size - 1] = null;
+            size--;
         }
-        size--;
     }
 
     @Override
-    public void doUpdate(Resume r, int index) {
-        storage[index] = r;
-    }
-
-    @Override
-    protected int findIndex(String uuid) {
+    protected Object findSearchKey(String uuid) {
         Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 }
+
