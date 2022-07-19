@@ -7,18 +7,16 @@ import com.urise.webapp.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void addElement(Resume r, int index) {
+    public void addElement(Resume r, Object searchKey) {
         storage[size] = r;
-        size++;
     }
 
     public void deleteElement(int index) {
         storage[index] = storage[size - 1];
         storage[size - 1] = null;
-        size--;
     }
 
-    public Object findSearchKey(String uuid) {
+    protected Object findSearchKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;

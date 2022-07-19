@@ -8,61 +8,54 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        int index = findExistingKey(r.getUuid());
-        doSave(r, index);
+        Object searchKey = findExistingKey(r.getUuid());
+        doSave(r, searchKey);
     }
 
     @Override
     public void delete(String uuid) {
-        int index = findNotExistingKey(uuid);
-        doDelete(index);
+        Object searchKey = findNotExistingKey(uuid);
+        doDelete(searchKey);
     }
 
     public Resume get(String uuid) {
-        int index = findNotExistingKey(uuid);
-        return doGet(index);
+        Object searchKey = findNotExistingKey(uuid);
+        return doGet(searchKey);
     }
 
     public void update(Resume r) {
-        int index = findNotExistingKey(r.getUuid());
-        doUpdate(r, index);
+        Object searchKey = findNotExistingKey(r.getUuid());
+        doUpdate(r, searchKey);
     }
 
-    public boolean isExist(Object searchKey) {
-        int index = (Integer) searchKey;
-        return index >= 0;
-    }
 
-    protected int findExistingKey(String uuid) {
+    protected Object findExistingKey(String uuid) {
         if (isExist(findSearchKey(uuid))) {
             throw new ExistStorageException(uuid);
         } else {
-            return (Integer) findSearchKey(uuid);
+            return findSearchKey(uuid);
         }
     }
 
-    protected int findNotExistingKey(String uuid) {
-
+    protected Object findNotExistingKey(String uuid) {
         if (isExist(findSearchKey(uuid))) {
-            return (Integer) findSearchKey(uuid);
+            return findSearchKey(uuid);
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
-    protected abstract Resume doGet(int index);
+    public abstract boolean isExist(Object searchKey);
 
-    protected abstract void doDelete(int index);
+    protected abstract Resume doGet(Object searchKey);
 
-    protected abstract void doSave(Resume r, int index);
+    protected abstract void doDelete(Object searchKey);
 
-    protected abstract void doUpdate(Resume r, int index);
+    protected abstract void doSave(Resume r, Object searchKey);
+
+    protected abstract void doUpdate(Resume r, Object searchKey);
 
     protected abstract Object findSearchKey(String uuid);
-
-    public abstract void addElement(Resume r, int index);
-
-    public abstract void deleteElement(int index);
 
     public abstract void clear();
 
