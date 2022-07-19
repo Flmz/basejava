@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-
     public void addElement(Resume r, Object searchKey) {
         int indexOfElement = ((int) (searchKey) * -1) - 1;
         System.arraycopy(storage, indexOfElement, storage, indexOfElement + 1, size - indexOfElement);
@@ -20,7 +19,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         if (elementsToMove > 0) {
             System.arraycopy(storage, index + 1, storage, index, elementsToMove);
             storage[size - 1] = null;
-
         }
     }
 

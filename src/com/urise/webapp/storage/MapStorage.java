@@ -10,7 +10,7 @@ public class MapStorage extends AbstractStorage {
     Map<String, Resume> storage = new HashMap<>();
 
     protected void doSave(Resume r, Object searchKey) {
-        storage.put(r.getUuid(),r);
+        storage.put(r.getUuid(), r);
     }
 
     public void clear() {
@@ -18,7 +18,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     protected void doUpdate(Resume r, Object searchKey) {
-        storage.replace(r.getUuid(),r);
+        storage.replace(r.getUuid(), r);
     }
 
     protected void doDelete(Object resume) {
