@@ -7,10 +7,14 @@ import com.urise.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static com.urise.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 import static org.junit.Assert.*;
 
-public abstract class AbstractArrayStorageTest {
+public abstract class AbstractStorageTest {
     private final Storage storage;
 
     private static final String UUID_1 = "uuid1";
@@ -19,19 +23,25 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_4 = "uuid4";
     private static final String UUID_NOT_EXIST = "dummy";
 
+    private static final String FULL_NAME_1 = "Denis Feoktistov";
+    private static final String FULL_NAME_2 = "Igor Kopyshev";
+    private static final String FULL_NAME_3 = "Alexandra Ishchenko";
+    private static final String FULL_NAME_4 = "Ivan Lazutin";
+    private static final String NAME_NOT_EXIST = "Name Secondname";
+
     private static final Resume RESUME_1;
     private static final Resume RESUME_2;
     private static final Resume RESUME_3;
     private static final Resume RESUME_4;
 
     static {
-        RESUME_1 = new Resume(UUID_1);
-        RESUME_2 = new Resume(UUID_2);
-        RESUME_3 = new Resume(UUID_3);
-        RESUME_4 = new Resume(UUID_4);
+        RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
+        RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
+        RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
+        RESUME_4 = new Resume(UUID_4, FULL_NAME_4);
     }
 
-    protected AbstractArrayStorageTest(Storage storage) {
+    protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -52,14 +62,14 @@ public abstract class AbstractArrayStorageTest {
     public void clear() throws Exception {
         storage.clear();
         assertSize(0);
-        assertArrayEquals(new Resume[0], storage.getAll());
+        assertEquals(new ArrayList<Resume>(), storage.getAllSorted());
     }
 
     @Test
     public void update() throws Exception {
-        Resume testResume = new Resume(UUID_1);
+        Resume testResume = new Resume(UUID_1,FULL_NAME_1);
         storage.update(testResume);
-        assertSame(testResume, storage.get(UUID_1));
+        assertTrue(testResume == storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -68,11 +78,10 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test
-    public void getAll() throws Exception {
-        final Resume[] EXPECTED_RESUMES = {RESUME_1, RESUME_2, RESUME_3};
-        Resume[] testResume = storage.getAll();
-        assertArrayEquals(EXPECTED_RESUMES, testResume);
+    public void getAllSorted() throws Exception {
+        List<Resume> list = storage.getAllSorted();
         assertSize(3);
+        assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
     }
 
     @Test
@@ -129,8 +138,7 @@ public abstract class AbstractArrayStorageTest {
     }
 
     public void assertGet(Resume r) throws Exception {
-        Resume testResume = storage.get(r.getUuid());
-        assertEquals(testResume, storage.get(r.getUuid()));
+        assertEquals(r, storage.get(r.getUuid()));
     }
 }
 
