@@ -12,7 +12,7 @@ public class MapFullNameStorage extends AbstractStorage {
     private final Map<String, Resume> storage = new HashMap<>();
 
     protected void doSave(Resume r, Object searchKey) {
-        storage.put(r.getFullName(), r);
+        storage.put(r.getUuid(), r);
     }
 
     public void clear() {
@@ -21,26 +21,26 @@ public class MapFullNameStorage extends AbstractStorage {
 
     @Override
     public void save(Resume r) {
-        Object searchKey = findExistingKey(r.getFullName());
+        Object searchKey = findExistingKey(r.getUuid());
         doSave(r, searchKey);
     }
 
     @Override
     public void update(Resume r) {
-        Object searchKey = findNotExistingKey(r.getFullName());
+        Object searchKey = findNotExistingKey(r.getUuid());
         doUpdate(r, searchKey);
     }
 
     public List<Resume> getAllSorted() {
-        return new ArrayList<>(storage.values());
+        return doSortList();
     }
 
     protected void doUpdate(Resume r, Object searchKey) {
-        storage.put(r.getFullName(), r);
+        storage.put(r.getUuid(), r);
     }
 
     protected void doDelete(Object resume) {
-        storage.remove(((Resume) resume).getFullName());
+        storage.remove(((Resume) resume).getUuid());
     }
 
     protected Resume doGet(Object resume) {

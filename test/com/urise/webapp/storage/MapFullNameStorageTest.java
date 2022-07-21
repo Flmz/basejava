@@ -1,8 +1,16 @@
 package com.urise.webapp.storage;
 
+import org.junit.Ignore;
+import org.junit.Test;
+
 public class MapFullNameStorageTest extends AbstractStorageTest {
 
-    public MapFullNameStorageTest(){
+    public MapFullNameStorageTest() {
         super(new MapFullNameStorage());
+    }
+
+    @Test
+    @Ignore
+    public void saveOverFlow() throws Exception {
     }
 }
