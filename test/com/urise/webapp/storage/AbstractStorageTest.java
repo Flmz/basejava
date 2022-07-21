@@ -2,7 +2,6 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageExeption;
 import com.urise.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,10 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.urise.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
+
+    protected final Storage storage;
+
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
@@ -36,8 +37,6 @@ public abstract class AbstractStorageTest {
         RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
         RESUME_4 = new Resume(UUID_4, FULL_NAME_4);
     }
-
-    private final Storage storage;
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -67,7 +66,7 @@ public abstract class AbstractStorageTest {
     public void update() throws Exception {
         Resume testResume = new Resume(UUID_1, FULL_NAME_1);
         storage.update(testResume);
-        assertTrue(testResume == storage.get(UUID_1));
+        assertSame(testResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -87,19 +86,6 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_4);
         assertSize(4);
         assertGet(RESUME_4);
-    }
-
-    @Test(expected = StorageExeption.class)
-    public void saveOverFlow() throws Exception {
-        storage.clear();
-        try {
-            for (int i = 0; i < STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageExeption ex) {
-            fail("The overflow occurred prematurely");
-        }
-        storage.save(RESUME_1);
     }
 
     @Test(expected = ExistStorageException.class)

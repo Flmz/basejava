@@ -31,7 +31,6 @@ public abstract class AbstractStorage implements Storage {
         doUpdate(r, searchKey);
     }
 
-
     protected Object findExistingKey(String key) {
         if (isExist(findSearchKey(key))) {
             throw new ExistStorageException(key);
