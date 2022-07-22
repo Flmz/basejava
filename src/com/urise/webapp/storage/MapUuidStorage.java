@@ -43,7 +43,7 @@ public class MapUuidStorage extends AbstractStorage {
         return storage.containsKey(searchKey);
     }
 
-    public List<Resume> doSortList() {
+    public List<Resume> doCopyAll() {
         return new ArrayList<>(storage.values());
     }
 }

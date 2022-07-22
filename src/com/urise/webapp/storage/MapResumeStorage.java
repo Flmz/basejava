@@ -49,7 +49,7 @@ public class MapResumeStorage extends AbstractStorage {
         doUpdate(r, searchKey);
     }
 
-    public List<Resume> doSortList() {
+    public List<Resume> doCopyAll() {
         return new ArrayList<>(storage.values());
     }
 }

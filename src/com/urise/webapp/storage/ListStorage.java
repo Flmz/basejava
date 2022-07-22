@@ -4,14 +4,12 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
 
-    List<Resume> storage = new ArrayList<>();
+    private final List<Resume> storage = new ArrayList<>();
 
-    @Override
     public void clear() {
         storage.clear();
     }
@@ -20,7 +18,6 @@ public class ListStorage extends AbstractStorage {
         storage.add(r);
     }
 
-    @Override
     protected void doUpdate(Resume r, Object searchKey) {
         storage.set((Integer) findSearchKey(r.getUuid()), r);
     }
@@ -31,10 +28,6 @@ public class ListStorage extends AbstractStorage {
 
     protected Resume doGet(Object searchKey) {
         return storage.get((Integer) searchKey);
-    }
-
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[0]);
     }
 
     public int getSize() {
@@ -54,9 +47,9 @@ public class ListStorage extends AbstractStorage {
         int index = (Integer) searchKey;
         return index >= 0;
     }
-    public List<Resume> doSortList() {
+
+    public List<Resume> doCopyAll() {
         List<Resume> list = storage;
-        Collections.sort(list);
         return list;
     }
 }

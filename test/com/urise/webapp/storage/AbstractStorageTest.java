@@ -10,11 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public abstract class AbstractStorageTest {
-
-    protected final Storage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -37,6 +36,8 @@ public abstract class AbstractStorageTest {
         RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
         RESUME_4 = new Resume(UUID_4, FULL_NAME_4);
     }
+
+    protected final Storage storage;
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -78,7 +79,7 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() throws Exception {
         List<Resume> list = storage.getAllSorted();
         assertSize(3);
-        assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+        assertEquals(list, Arrays.asList(RESUME_3, RESUME_1, RESUME_2));
     }
 
     @Test

@@ -33,10 +33,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         storage[(Integer) searchKey] = r;
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
     @Override
     public void doSave(Resume r, Object searchKey) {
         if (size == STORAGE_LIMIT) {
@@ -59,7 +55,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    public List<Resume> doSortList(){
+    public List<Resume> doCopyAll() {
         return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
