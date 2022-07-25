@@ -6,68 +6,76 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    @Override
     public void save(Resume r) {
-        Object searchKey = findExistingKey(r.getUuid());
+        LOG.info("Save " + r);
+        SK searchKey = findExistingKey(r.getUuid());
         doSave(r, searchKey);
     }
 
     @Override
     public void delete(String uuid) {
-        Object searchKey = findNotExistingKey(uuid);
+        LOG.info("Delete " + uuid);
+        SK searchKey = findNotExistingKey(uuid);
         doDelete(searchKey);
     }
 
     public Resume get(String uuid) {
-        Object searchKey = findNotExistingKey(uuid);
+        LOG.info("Get " + uuid);
+        SK searchKey = findNotExistingKey(uuid);
         return doGet(searchKey);
     }
 
     public void update(Resume r) {
-        Object searchKey = findNotExistingKey(r.getUuid());
+        LOG.info("Update " + r);
+        SK searchKey = findNotExistingKey(r.getUuid());
         doUpdate(r, searchKey);
     }
 
-    protected Object findExistingKey(String key) {
+    protected SK findExistingKey(String key) {
         if (isExist(findSearchKey(key))) {
+            LOG.warning("Resume already exist: " + key);
             throw new ExistStorageException(key);
         } else {
             return findSearchKey(key);
         }
     }
 
-    protected Object findNotExistingKey(String key) {
+    protected SK findNotExistingKey(String key) {
         if (isExist(findSearchKey(key))) {
             return findSearchKey(key);
         } else {
+            LOG.warning("Resume not exist: " + key);
             throw new NotExistStorageException(key);
         }
     }
 
     public List<Resume> getAllSorted() {
-        List<Resume> list = doSortList();
+        LOG.info("getAllSorted");
+        List<Resume> list = doCopyAll();
         Collections.sort(list);
         return list;
     }
 
-    public abstract boolean isExist(Object searchKey);
+    public abstract boolean isExist(SK searchKey);
 
-    protected abstract Resume doGet(Object searchKey);
+    protected abstract Resume doGet(SK searchKey);
 
-    protected abstract void doDelete(Object searchKey);
+    protected abstract void doDelete(SK searchKey);
 
-    protected abstract void doSave(Resume r, Object searchKey);
+    protected abstract void doSave(Resume r, SK searchKey);
 
-    protected abstract void doUpdate(Resume r, Object searchKey);
+    protected abstract void doUpdate(Resume r, SK searchKey);
 
-    protected abstract Object findSearchKey(String uuid);
+    protected abstract SK findSearchKey(String uuid);
 
     public abstract void clear();
 
-    public abstract List<Resume> doSortList();
+    public abstract List<Resume> doCopyAll();
 
 }
 

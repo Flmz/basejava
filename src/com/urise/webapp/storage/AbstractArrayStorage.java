@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     protected static final int STORAGE_LIMIT = 10000;
 
@@ -23,22 +23,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    protected void doDelete(Object searchKey) {
-        deleteElement((Integer) searchKey);
+    protected void doDelete(Integer searchKey) {
+        deleteElement(searchKey);
         size--;
     }
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        storage[(Integer) searchKey] = r;
-    }
-
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+    protected void doUpdate(Resume r, Integer searchKey) {
+        storage[searchKey] = r;
     }
 
     @Override
-    public void doSave(Resume r, Object searchKey) {
+    public void doSave(Resume r, Integer searchKey) {
         if (size == STORAGE_LIMIT) {
             throw new StorageExeption("Storage overflow", r.getUuid());
         }
@@ -46,24 +42,24 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size++;
     }
 
-    public boolean isExist(Object searchKey) {
-        int index = (Integer) searchKey;
+    public boolean isExist(Integer searchKey) {
+        int index = searchKey;
         return index >= 0;
     }
 
-    protected Resume doGet(Object searchKey) {
-        return storage[(Integer) searchKey];
+    protected Resume doGet(Integer searchKey) {
+        return storage[searchKey];
     }
 
     public int getSize() {
         return size;
     }
 
-    public List<Resume> doSortList(){
+    public List<Resume> doCopyAll() {
         return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
-    protected abstract Object findSearchKey(String uuid);
+    protected abstract Integer findSearchKey(String uuid);
 
     public abstract void addElement(Resume r, Object searchKey);
 

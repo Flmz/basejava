@@ -8,13 +8,12 @@ import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    protected static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
+    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     public void addElement(Resume r, Object searchKey) {
         int indexOfElement = ((int) (searchKey) * -1) - 1;
         System.arraycopy(storage, indexOfElement, storage, indexOfElement + 1, size - indexOfElement);
         storage[indexOfElement] = r;
-
     }
 
     public void deleteElement(int index) {
@@ -25,9 +24,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    protected Object findSearchKey(String uuid) {
-        Resume searchKey = new Resume(uuid,"name");
-        return Arrays.binarySearch(storage, 0, size, searchKey,RESUME_COMPARATOR);
+    protected Integer findSearchKey(String uuid) {
+        Resume searchKey = new Resume(uuid, "name");
+        return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
 }
 
