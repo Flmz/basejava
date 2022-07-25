@@ -1,6 +1,6 @@
 package com.urise.webapp.model;
 
-public enum ContactsType {
+public enum ContactType {
     MOBILE_PHONE("Мобильный"),
     SKYPE("Skype"),
     MAIL("Почта"),
@@ -11,7 +11,7 @@ public enum ContactsType {
 
     private final String title;
 
-    ContactsType(String title) {
+    ContactType(String title) {
         this.title = title;
     }
 

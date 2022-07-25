@@ -5,7 +5,7 @@ import java.util.Objects;
 public class TextInSections extends Sections {
     private final String text;
 
-    public TextInSections(String text){
+    public TextInSections(String text) {
         Objects.requireNonNull(text, "Text cant be null");
         this.text = text;
     }
