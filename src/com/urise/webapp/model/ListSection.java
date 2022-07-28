@@ -3,11 +3,11 @@ package com.urise.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ListTexts extends Sections {
+public class ListSection extends AbstractSection {
 
     private final List<String> text;
 
-    public ListTexts(List<String> text) {
+    public ListSection(List<String> text) {
         Objects.requireNonNull(text);
         this.text = text;
     }
@@ -20,8 +20,8 @@ public class ListTexts extends Sections {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ListTexts listTexts = (ListTexts) o;
-        return text.equals(listTexts.text);
+        ListSection listSection = (ListSection) o;
+        return text.equals(listSection.text);
     }
 
     @Override
