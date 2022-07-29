@@ -3,19 +3,19 @@ package com.urise.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class Organization extends OrganizationSection {
-    private final String nameOrganization;
+public class Organization {
+    private final String name;
     private final List<Period> periods;
 
-    public Organization(List<Organization> listOrganization, String nameOrganization, List<Period> periods) {
-        super(listOrganization);
-        Objects.requireNonNull(nameOrganization);
-        this.nameOrganization = nameOrganization;
+    public Organization(String name, List<Period> periods) {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(periods);
+        this.name = name;
         this.periods = periods;
     }
 
-    public String getNameOrganization() {
-        return nameOrganization;
+    public String getName() {
+        return name;
     }
 
     public List<Period> getPeriods() {
@@ -27,18 +27,18 @@ public class Organization extends OrganizationSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return nameOrganization.equals(that.nameOrganization) && periods.equals(that.periods);
+        return name.equals(that.name) && periods.equals(that.periods);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nameOrganization, periods);
+        return Objects.hash(name, periods);
     }
 
     @Override
     public String toString() {
         return "Organization{" +
-                "nameOrganization='" + nameOrganization + '\'' +
+                "nameOrganization='" + name + '\'' +
                 ", periods=" + periods +
                 '}';
     }
