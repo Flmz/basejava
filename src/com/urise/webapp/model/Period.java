@@ -1,14 +1,14 @@
 package com.urise.webapp.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Period {
-    private final Date startDate;
-    private final Date endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
     private final String description;
 
-    public Period(Date startDate, Date endDate, String description) {
+    public Period(LocalDate startDate, LocalDate endDate, String description) {
         Objects.requireNonNull(startDate);
         Objects.requireNonNull(description);
         this.startDate = startDate;
@@ -16,11 +16,11 @@ public class Period {
         this.description = description;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 

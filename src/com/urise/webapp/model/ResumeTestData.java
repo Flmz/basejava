@@ -1,16 +1,15 @@
 package com.urise.webapp.model;
 
-import java.time.DayOfWeek;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import static com.urise.webapp.model.ContactType.*;
 import static com.urise.webapp.model.SectionType.*;
+import static java.time.LocalDate.ofYearDay;
 
 public class ResumeTestData {
-
     public static void main(String[] args) {
         Resume resume = new Resume("Denis", "uuid1");
         String textAchievement1 = "Организация команды и успешная реализация Java проектов для" +
@@ -65,12 +64,24 @@ public class ResumeTestData {
                 "креативность, инициативность. Пурист кода и архитектуры."));
         resume.getSections().put(ACHIEVEMENT, new ListSection(listAchievements));
 
-        //TODO разобраться с добавлением датой и её установкой
-        Date date = new Date(2013, Calendar.DECEMBER,0);
-        System.out.println(date);
-
         resume.getSections().put(QUALIFICATIONS, new ListSection(listQualifications));
-       // Period first = new Period("10.2013", "now","");
-       // resume.getSections().put(EXPERIENCE, new OrganizationSection());
+
+        Period first = new Period(ofYearDay(2013, 10), LocalDate.now(), "Создание, организация " +
+                "и проведение Java онлайн проектов и стажировок.");
+        Period second = new Period(ofYearDay(2014, 10), ofYearDay(2016, 01), "Проектирование и " +
+                "разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, " +
+                "Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
+
+        List<Period> periodsOrganizations = new LinkedList<>();
+        periodsOrganizations.add(first);
+        periodsOrganizations.add(second);
+        Organization organizations = new Organization("Wrike", periodsOrganizations);
+        List<Organization> organizationList = new ArrayList<>();
+        organizationList.add(organizations);
+        OrganizationSection organizationExperience = new OrganizationSection(organizationList);
+
+        resume.getSections().put(EXPERIENCE, organizationExperience);
+
+        System.out.println(resume);
     }
 }
